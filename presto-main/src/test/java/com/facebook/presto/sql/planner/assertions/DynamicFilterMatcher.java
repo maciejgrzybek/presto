@@ -169,9 +169,7 @@ public class DynamicFilterMatcher
     @Override
     public MatchResult detailMatches(PlanNode node, PlanNodeCost planNodeCost, Session session, Metadata metadata, SymbolAliases symbolAliases)
     {
-        if (!(node instanceof FilterNode)) {
-            return new MatchResult(false);
-        }
+        checkState(shapeMatches(node), "Plan testing framework error: shapeMatches returned false in detailMatches in %s", this.getClass().getName());
         return match((FilterNode) node, symbolAliases);
     }
 
