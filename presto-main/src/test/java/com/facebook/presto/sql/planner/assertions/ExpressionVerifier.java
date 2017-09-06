@@ -20,7 +20,6 @@ import com.facebook.presto.sql.tree.BooleanLiteral;
 import com.facebook.presto.sql.tree.Cast;
 import com.facebook.presto.sql.tree.CoalesceExpression;
 import com.facebook.presto.sql.tree.ComparisonExpression;
-import com.facebook.presto.sql.tree.DeferredSymbolReference;
 import com.facebook.presto.sql.tree.DoubleLiteral;
 import com.facebook.presto.sql.tree.Expression;
 import com.facebook.presto.sql.tree.FunctionCall;
@@ -71,10 +70,10 @@ import static java.util.Objects.requireNonNull;
  * NOT (X = 3 AND X = 3 AND X < 10)
  * </pre>
  */
-final class ExpressionVerifier
+class ExpressionVerifier
         extends AstVisitor<Boolean, Node>
 {
-    private final SymbolAliases symbolAliases;
+    protected final SymbolAliases symbolAliases;
 
     ExpressionVerifier(SymbolAliases symbolAliases)
     {
@@ -301,12 +300,6 @@ final class ExpressionVerifier
             return false;
         }
         return symbolAliases.get(((SymbolReference) expected).getName()).equals(actual);
-    }
-
-    @Override
-    protected Boolean visitDeferredSymbolReference(DeferredSymbolReference node, Node expected)
-    {
-        return expected instanceof DeferredSymbolReference;
     }
 
     @Override

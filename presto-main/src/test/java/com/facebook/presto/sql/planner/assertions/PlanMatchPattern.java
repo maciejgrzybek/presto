@@ -378,6 +378,12 @@ public final class PlanMatchPattern
         return node(FilterNode.class, source).with(new FilterMatcher(expectedPredicate));
     }
 
+    public static PlanMatchPattern filter(String predicate, Map<String, String> dynamicFilters, PlanMatchPattern source)
+    {
+        Expression expectedPredicate = rewriteIdentifiersToSymbolReferences(new SqlParser().createExpression(predicate));
+        return node(FilterNode.class, source).with(new FilterMatcher(expectedPredicate, dynamicFilters));
+    }
+
     public static PlanMatchPattern apply(List<String> correlationSymbolAliases, Map<String, ExpressionMatcher> subqueryAssignments, PlanMatchPattern inputPattern, PlanMatchPattern subqueryPattern)
     {
         PlanMatchPattern result = node(ApplyNode.class, inputPattern, subqueryPattern)
