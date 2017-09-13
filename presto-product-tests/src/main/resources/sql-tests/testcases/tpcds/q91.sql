@@ -1,4 +1,4 @@
--- database: presto_tpcds; groups: tpcds; requires: com.teradata.tempto.fulfillment.table.hive.tpcds.ImmutableTpcdsTablesRequirements
+-- database: presto_tpcds; groups: tpcds
 SELECT
   "cc_call_center_id" "Call_Center"
 , "cc_name" "Call_Center_Name"

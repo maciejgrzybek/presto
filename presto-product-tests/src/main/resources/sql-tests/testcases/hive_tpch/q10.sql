@@ -1,4 +1,4 @@
--- database: presto; groups: tpch; tables: customer,orders,lineitem,nation
+-- database: presto_tpch; groups: tpch
 SELECT
   c_custkey,
   c_name,

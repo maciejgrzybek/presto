@@ -1,4 +1,4 @@
--- database: presto; groups: tpch, big_query; tables: part,supplier,lineitem,orders,customer,nation
+-- database: presto_tpch; groups: tpch
 SELECT
   o_year,
   sum(CASE

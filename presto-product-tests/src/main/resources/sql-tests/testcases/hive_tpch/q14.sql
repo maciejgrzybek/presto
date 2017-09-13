@@ -1,4 +1,4 @@
--- database: presto; groups: tpch; tables: lineitem,part
+-- database: presto_tpch; groups: tpch
 SELECT 100.00 * sum(CASE
                     WHEN p_type LIKE 'PROMO%'
                       THEN l_extendedprice * (1 - l_discount)

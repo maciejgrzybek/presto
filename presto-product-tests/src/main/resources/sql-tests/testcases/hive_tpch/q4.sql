@@ -1,4 +1,4 @@
--- database: presto; groups: tpch; tables: orders,lineitem
+-- database: presto_tpch; groups: tpch
 SELECT
   o_orderpriority,
   count(*) AS order_count

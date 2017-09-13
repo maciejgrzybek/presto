@@ -1,4 +1,4 @@
--- database: presto_tpcds; groups: tpcds; requires: com.teradata.tempto.fulfillment.table.hive.tpcds.ImmutableTpcdsTablesRequirements
+-- database: presto_tpcds; groups: tpcds
 SELECT "sum"("cs_ext_discount_amt") "excess discount amount"
 FROM
   catalog_sales

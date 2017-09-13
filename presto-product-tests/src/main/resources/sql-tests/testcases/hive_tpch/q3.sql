@@ -1,4 +1,4 @@
--- database: presto; groups: tpch; tables: customer,orders,lineitem
+-- database: presto_tpch; groups: tpch
 SELECT
   l_orderkey,
   sum(l_extendedprice * (1 - l_discount)) AS revenue,
