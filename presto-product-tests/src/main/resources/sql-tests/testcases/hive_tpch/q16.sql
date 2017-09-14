@@ -1,30 +1,30 @@
 -- database: presto_tpch; groups: tpch
 SELECT
-  p_brand,
-  p_type,
-  p_size,
-  count(DISTINCT ps_suppkey) AS supplier_cnt
+  p.brand,
+  p.type,
+  p.size,
+  count(DISTINCT ps.suppkey) AS supplier_cnt
 FROM
-  partsupp,
-  part
+  partsupp ps,
+  part p
 WHERE
-  p_partkey = ps_partkey
-  AND p_brand <> 'Brand#45'
-  AND p_type NOT LIKE 'MEDIUM POLISHED%'
-  AND p_size IN (49, 14, 23, 45, 19, 3, 36, 9)
-  AND ps_suppkey NOT IN (
-    SELECT s_suppkey
+  p.partkey = ps.partkey
+  AND p.brand <> 'Brand#45'
+  AND p.type NOT LIKE 'MEDIUM POLISHED%'
+  AND p.size IN (49, 14, 23, 45, 19, 3, 36, 9)
+  AND ps.suppkey NOT IN (
+    SELECT s.suppkey
     FROM
-      supplier
+      supplier s
     WHERE
-      s_comment LIKE '%Customer%Complaints%'
+      s.comment LIKE '%Customer%Complaints%'
   )
 GROUP BY
-  p_brand,
-  p_type,
-  p_size
+  p.brand,
+  p.type,
+  p.size
 ORDER BY
   supplier_cnt DESC,
-  p_brand,
-  p_type,
-  p_size
+  p.brand,
+  p.type,
+  p.size

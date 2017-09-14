@@ -1,33 +1,33 @@
 -- database: presto_tpch; groups: tpch
 SELECT
-  c_custkey,
-  c_name,
-  sum(l_extendedprice * (1 - l_discount)) AS revenue,
-  c_acctbal,
-  n_name,
-  c_address,
-  c_phone,
-  c_comment
+  c.custkey,
+  c.name,
+  sum(l.extendedprice * (1 - l.discount)) AS revenue,
+  c.acctbal,
+  n.name,
+  c.address,
+  c.phone,
+  c.comment
 FROM
-  customer,
-  orders,
-  lineitem,
-  nation
+  customer c,
+  orders o,
+  lineitem l,
+  nation n
 WHERE
-  c_custkey = o_custkey
-  AND l_orderkey = o_orderkey
-  AND o_orderdate >= DATE '1993-10-01'
-  AND o_orderdate < DATE '1993-10-01' + INTERVAL '3' MONTH
-  AND l_returnflag = 'R'
-  AND c_nationkey = n_nationkey
+  c.custkey = o.custkey
+  AND l.orderkey = o.orderkey
+  AND o.orderdate >= DATE '1993-10-01'
+  AND o.orderdate < DATE '1993-10-01' + INTERVAL '3' MONTH
+  AND l.returnflag = 'R'
+  AND c.nationkey = n.nationkey
 GROUP BY
-  c_custkey,
-  c_name,
-  c_acctbal,
-  c_phone,
-  n_name,
-  c_address,
-  c_comment
+  c.custkey,
+  c.name,
+  c.acctbal,
+  c.phone,
+  n.name,
+  c.address,
+  c.comment
 ORDER BY
   revenue DESC
 LIMIT 20

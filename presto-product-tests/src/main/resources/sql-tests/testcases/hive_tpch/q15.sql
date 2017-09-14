@@ -1,31 +1,31 @@
--- database: presto_tpch; groups: tpch
-CREATE OR REPLACE VIEW revenue AS
+-- database: presto_tpch; groups: tpch,quarantine
+CREATE OR REPLACE VIEW hive.default.revenue AS
   SELECT
-    l_suppkey AS supplier_no,
-    sum(l_extendedprice * (1 - l_discount)) AS total_revenue
+    l.suppkey AS supplier_no,
+    sum(l.extendedprice * (1 - l.discount)) AS total_revenue
   FROM
-    lineitem
+    lineitem l
   WHERE
-    l_shipdate >= DATE '1996-01-01'
-    AND l_shipdate < DATE '1996-01-01' + INTERVAL '3' MONTH
+    l.shipdate >= DATE '1996-01-01'
+    AND l.shipdate < DATE '1996-01-01' + INTERVAL '3' MONTH
 GROUP BY
-  l_suppkey;
+  l.suppkey;
 
 SELECT
-  s_suppkey,
-  s_name,
-  s_address,
-  s_phone,
+  s.suppkey,
+  s.name,
+  s.address,
+  s.phone,
   total_revenue
 FROM
-  supplier,
-  revenue
+  supplier s,
+  hive.default.revenue
 WHERE
-  s_suppkey = supplier_no
+  s.suppkey = supplier_no
   AND total_revenue = (
     SELECT max(total_revenue)
     FROM
       revenue
   )
 ORDER BY
-  s_suppkey;
+  s.suppkey;

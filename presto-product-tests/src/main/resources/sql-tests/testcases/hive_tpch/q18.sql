@@ -1,34 +1,34 @@
 -- database: presto_tpch; groups: tpch
 SELECT
-  c_name,
-  c_custkey,
-  o_orderkey,
-  o_orderdate,
-  o_totalprice,
-  sum(l_quantity)
+  c.name,
+  c.custkey,
+  o.orderkey,
+  o.orderdate,
+  o.totalprice,
+  sum(l.quantity)
 FROM
-  customer,
-  orders,
-  lineitem
+  customer c,
+  orders o,
+  lineitem l
 WHERE
-  o_orderkey IN (
-    SELECT l_orderkey
+  o.orderkey IN (
+    SELECT l.orderkey
     FROM
-      lineitem
+      lineitem l
     GROUP BY
-      l_orderkey
+      l.orderkey
     HAVING
-      sum(l_quantity) > 300
+      sum(l.quantity) > 300
   )
-  AND c_custkey = o_custkey
-  AND o_orderkey = l_orderkey
+  AND c.custkey = o.custkey
+  AND o.orderkey = l.orderkey
 GROUP BY
-  c_name,
-  c_custkey,
-  o_orderkey,
-  o_orderdate,
-  o_totalprice
+  c.name,
+  c.custkey,
+  o.orderkey,
+  o.orderdate,
+  o.totalprice
 ORDER BY
-  o_totalprice DESC,
-  o_orderdate
+  o.totalprice DESC,
+  o.orderdate
 LIMIT 100

@@ -1,29 +1,29 @@
 -- database: presto_tpch; groups: tpch
 SELECT
-  l_shipmode,
+  l.shipmode,
   sum(CASE
-      WHEN o_orderpriority = '1-URGENT'
-           OR o_orderpriority = '2-HIGH'
+      WHEN o.orderpriority = '1-URGENT'
+           OR o.orderpriority = '2-HIGH'
         THEN 1
       ELSE 0
       END) AS high_line_count,
   sum(CASE
-      WHEN o_orderpriority <> '1-URGENT'
-           AND o_orderpriority <> '2-HIGH'
+      WHEN o.orderpriority <> '1-URGENT'
+           AND o.orderpriority <> '2-HIGH'
         THEN 1
       ELSE 0
       END) AS low_line_count
 FROM
-  orders,
-  lineitem
+  orders o,
+  lineitem l
 WHERE
-  o_orderkey = l_orderkey
-  AND l_shipmode IN ('MAIL', 'SHIP')
-  AND l_commitdate < l_receiptdate
-  AND l_shipdate < l_commitdate
-  AND l_receiptdate >= DATE '1994-01-01'
-  AND l_receiptdate < DATE '1994-01-01' + INTERVAL '1' YEAR
+  o.orderkey = l.orderkey
+  AND l.shipmode IN ('MAIL', 'SHIP')
+  AND l.commitdate < l.receiptdate
+  AND l.shipdate < l.commitdate
+  AND l.receiptdate >= DATE '1994-01-01'
+  AND l.receiptdate < DATE '1994-01-01' + INTERVAL '1' YEAR
 GROUP BY
-  l_shipmode
+  l.shipmode
 ORDER BY
-  l_shipmode
+  l.shipmode

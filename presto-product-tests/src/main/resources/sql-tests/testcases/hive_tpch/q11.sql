@@ -1,28 +1,28 @@
 -- database: presto_tpch; groups: tpch
 SELECT
-  ps_partkey,
-  sum(ps_supplycost * ps_availqty) AS value
+  ps.partkey,
+  sum(ps.supplycost * ps.availqty) AS value
 FROM
-  partsupp,
-  supplier,
-  nation
+  partsupp ps,
+  supplier s,
+  nation n
 WHERE
-  ps_suppkey = s_suppkey
-  AND s_nationkey = n_nationkey
-  AND n_name = 'GERMANY'
+  ps.suppkey = s.suppkey
+  AND s.nationkey = n.nationkey
+  AND n.name = 'GERMANY'
 GROUP BY
-  ps_partkey
+  ps.partkey
 HAVING
-  sum(ps_supplycost * ps_availqty) > (
-    SELECT sum(ps_supplycost * ps_availqty) * 0.0001
+  sum(ps.supplycost * ps.availqty) > (
+    SELECT sum(ps.supplycost * ps.availqty) * 0.0001
     FROM
-      partsupp,
-      supplier,
-      nation
+      partsupp ps,
+      supplier s,
+      nation n
     WHERE
-      ps_suppkey = s_suppkey
-      AND s_nationkey = n_nationkey
-      AND n_name = 'GERMANY'
+      ps.suppkey = s.suppkey
+      AND s.nationkey = n.nationkey
+      AND n.name = 'GERMANY'
   )
 ORDER BY
   value DESC

@@ -6,28 +6,28 @@ SELECT
   sum(volume) AS revenue
 FROM (
        SELECT
-         n1.n_name                          AS supp_nation,
-         n2.n_name                          AS cust_nation,
-         extract(YEAR FROM l_shipdate)      AS l_year,
-         l_extendedprice * (1 - l_discount) AS volume
+         n1.name                          AS supp_nation,
+         n2.name                          AS cust_nation,
+         extract(YEAR FROM l.shipdate)      AS l_year,
+         l.extendedprice * (1 - l.discount) AS volume
        FROM
-         supplier,
-         lineitem,
-         orders,
-         customer,
+         supplier s,
+         lineitem l,
+         orders o,
+         customer c,
          nation n1,
          nation n2
        WHERE
-         s_suppkey = l_suppkey
-         AND o_orderkey = l_orderkey
-         AND c_custkey = o_custkey
-         AND s_nationkey = n1.n_nationkey
-         AND c_nationkey = n2.n_nationkey
+         s.suppkey = l.suppkey
+         AND o.orderkey = l.orderkey
+         AND c.custkey = o.custkey
+         AND s.nationkey = n1.nationkey
+         AND c.nationkey = n2.nationkey
          AND (
-           (n1.n_name = 'FRANCE' AND n2.n_name = 'GERMANY')
-           OR (n1.n_name = 'GERMANY' AND n2.n_name = 'FRANCE')
+           (n1.name = 'FRANCE' AND n2.name = 'GERMANY')
+           OR (n1.name = 'GERMANY' AND n2.name = 'FRANCE')
          )
-         AND l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1996-12-31'
+         AND l.shipdate BETWEEN DATE '1995-01-01' AND DATE '1996-12-31'
      ) AS shipping
 GROUP BY
   supp_nation,

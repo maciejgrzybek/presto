@@ -1,39 +1,39 @@
 -- database: presto_tpch; groups: tpch
 SELECT
-  s_name,
+  s.name,
   count(*) AS numwait
 FROM
-  supplier,
+  supplier s,
   lineitem l1,
-  orders,
-  nation
+  orders o,
+  nation n
 WHERE
-  s_suppkey = l1.l_suppkey
-  AND o_orderkey = l1.l_orderkey
-  AND o_orderstatus = 'F'
-  AND l1.l_receiptdate > l1.l_commitdate
+  s.suppkey = l1.suppkey
+  AND o.orderkey = l1.orderkey
+  AND o.orderstatus = 'F'
+  AND l1.receiptdate > l1.commitdate
   AND exists(
     SELECT *
     FROM
       lineitem l2
     WHERE
-      l2.l_orderkey = l1.l_orderkey
-      AND l2.l_suppkey <> l1.l_suppkey
+      l2.orderkey = l1.orderkey
+      AND l2.suppkey <> l1.suppkey
   )
   AND NOT exists(
     SELECT *
     FROM
       lineitem l3
     WHERE
-      l3.l_orderkey = l1.l_orderkey
-      AND l3.l_suppkey <> l1.l_suppkey
-      AND l3.l_receiptdate > l3.l_commitdate
+      l3.orderkey = l1.orderkey
+      AND l3.suppkey <> l1.suppkey
+      AND l3.receiptdate > l3.commitdate
   )
-  AND s_nationkey = n_nationkey
-  AND n_name = 'SAUDI ARABIA'
+  AND s.nationkey = n.nationkey
+  AND n.name = 'SAUDI ARABIA'
 GROUP BY
-  s_name
+  s.name
 ORDER BY
   numwait DESC,
-  s_name
+  s.name
 LIMIT 100

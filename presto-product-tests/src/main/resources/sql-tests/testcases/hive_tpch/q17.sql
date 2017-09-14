@@ -1,16 +1,16 @@
 -- database: presto_tpch; groups: tpch
-SELECT sum(l_extendedprice) / 7.0 AS avg_yearly
+SELECT sum(l.extendedprice) / 7.0 AS avg_yearly
 FROM
-  lineitem,
-  part
+  lineitem l,
+  part p
 WHERE
-  p_partkey = l_partkey
-  AND p_brand = 'Brand#23'
-  AND p_container = 'MED BOX'
-  AND l_quantity < (
-    SELECT 0.2 * avg(l_quantity)
+  p.partkey = l.partkey
+  AND p.brand = 'Brand#23'
+  AND p.container = 'MED BOX'
+  AND l.quantity < (
+    SELECT 0.2 * avg(l.quantity)
     FROM
-      lineitem
+      lineitem l
     WHERE
-      l_partkey = p_partkey
+      l.partkey = p.partkey
   )

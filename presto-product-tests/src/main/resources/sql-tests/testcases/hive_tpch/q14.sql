@@ -1,13 +1,13 @@
 -- database: presto_tpch; groups: tpch
 SELECT 100.00 * sum(CASE
-                    WHEN p_type LIKE 'PROMO%'
-                      THEN l_extendedprice * (1 - l_discount)
+                    WHEN p.type LIKE 'PROMO%'
+                      THEN l.extendedprice * (1 - l.discount)
                     ELSE 0
-                    END) / sum(l_extendedprice * (1 - l_discount)) AS promo_revenue
+                    END) / sum(l.extendedprice * (1 - l.discount)) AS promo_revenue
 FROM
-  lineitem,
-  part
+  lineitem l,
+  part p
 WHERE
-  l_partkey = p_partkey
-  AND l_shipdate >= DATE '1995-09-01'
-  AND l_shipdate < DATE '1995-09-01' + INTERVAL '1' MONTH
+  l.partkey = p.partkey
+  AND l.shipdate >= DATE '1995-09-01'
+  AND l.shipdate < DATE '1995-09-01' + INTERVAL '1' MONTH

@@ -1,24 +1,24 @@
 -- database: presto_tpch; groups: tpch
 SELECT
-  l_orderkey,
-  sum(l_extendedprice * (1 - l_discount)) AS revenue,
-  o_orderdate,
-  o_shippriority
+  l.orderkey,
+  sum(l.extendedprice * (1 - l.discount)) AS revenue,
+  o.orderdate,
+  o.shippriority
 FROM
-  customer,
-  orders,
-  lineitem
+  customer c,
+  orders o,
+  lineitem l
 WHERE
-  c_mktsegment = 'BUILDING'
-  AND c_custkey = o_custkey
-  AND l_orderkey = o_orderkey
-  AND o_orderdate < DATE '1995-03-15'
-  AND l_shipdate > DATE '1995-03-15'
+  c.mktsegment = 'BUILDING'
+  AND c.custkey = o.custkey
+  AND l.orderkey = o.orderkey
+  AND o.orderdate < DATE '1995-03-15'
+  AND l.shipdate > DATE '1995-03-15'
 GROUP BY
-  l_orderkey,
-  o_orderdate,
-  o_shippriority
+  l.orderkey,
+  o.orderdate,
+  o.shippriority
 ORDER BY
   revenue DESC,
-  o_orderdate
+  o.orderdate
 LIMIT 10

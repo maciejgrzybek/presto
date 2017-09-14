@@ -1,4 +1,4 @@
--- delimiter: |; ignoreOrder: false; types: LONGNVARCHAR|BIGINT|DECIMAL
+-- delimiter: |; ignoreOrder: false; types: LONGNVARCHAR|BIGINT|DOUBLE
 13|10|75359.29
 17|8|62288.98
 18|14|111072.45

@@ -4,15 +4,15 @@ SELECT
   count(*) AS custdist
 FROM (
        SELECT
-         c_custkey,
-         count(o_orderkey)
+         c.custkey,
+         count(o.orderkey)
        FROM
-         customer
-         LEFT OUTER JOIN orders ON
-                                  c_custkey = o_custkey
-                                  AND o_comment NOT LIKE '%special%requests%'
+         customer c
+         LEFT OUTER JOIN orders o ON
+                                  c.custkey = o.custkey
+                                  AND o.comment NOT LIKE '%special%requests%'
        GROUP BY
-         c_custkey
+         c.custkey
      ) AS c_orders (c_custkey, c_count)
 GROUP BY
   c_count

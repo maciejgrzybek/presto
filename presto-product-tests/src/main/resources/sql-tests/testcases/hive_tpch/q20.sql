@@ -1,33 +1,33 @@
 -- database: presto_tpch; groups: tpch
 SELECT
-  s_name,
-  s_address
+  s.name,
+  s.address
 FROM
-  supplier, nation
+  supplier s, nation n
 WHERE
-  s_suppkey IN (
-    SELECT ps_suppkey
+  s.suppkey IN (
+    SELECT ps.suppkey
     FROM
-      partsupp
+      partsupp ps
     WHERE
-      ps_partkey IN (
-        SELECT p_partkey
+      ps.partkey IN (
+        SELECT p.partkey
         FROM
-          part
+          part p
         WHERE
-          p_name LIKE 'forest%'
+          p.name LIKE 'forest%'
       )
-      AND ps_availqty > (
-        SELECT 0.5 * sum(l_quantity)
+      AND ps.availqty > (
+        SELECT 0.5 * sum(l.quantity)
         FROM
-          lineitem
+          lineitem l
         WHERE
-          l_partkey = ps_partkey
-          AND l_suppkey = ps_suppkey
-          AND l_shipdate >= date('1994-01-01')
-          AND l_shipdate < date('1994-01-01') + interval '1' YEAR
+          l.partkey = ps.partkey
+          AND l.suppkey = ps.suppkey
+          AND l.shipdate >= date('1994-01-01')
+          AND l.shipdate < date('1994-01-01') + interval '1' YEAR
 )
 )
-AND s_nationkey = n_nationkey
-AND n_name = 'CANADA'
-ORDER BY s_name
+AND s.nationkey = n.nationkey
+AND n.name = 'CANADA'
+ORDER BY s.name

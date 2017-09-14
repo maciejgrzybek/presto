@@ -2,31 +2,31 @@
 SELECT
   cntrycode,
   count(*)       AS numcust,
-  sum(c_acctbal) AS totacctbal
+  sum(acctbal) AS totacctbal
 FROM (
        SELECT
-         substr(c_phone, 1, 2) AS cntrycode,
-         c_acctbal
+         substr(c.phone, 1, 2) AS cntrycode,
+         c.acctbal
        FROM
-         customer
+         customer c
        WHERE
-         substr(c_phone, 1, 2) IN
+         substr(c.phone, 1, 2) IN
          ('13', '31', '23', '29', '30', '18', '17')
-         AND c_acctbal > (
-           SELECT avg(c_acctbal)
+         AND c.acctbal > (
+           SELECT avg(c.acctbal)
            FROM
-             customer
+             customer c
            WHERE
-             c_acctbal > 0.00
-             AND substr(c_phone, 1, 2) IN
+             c.acctbal > 0.00
+             AND substr(c.phone, 1, 2) IN
                  ('13', '31', '23', '29', '30', '18', '17')
          )
          AND NOT exists(
            SELECT *
            FROM
-             orders
+             orders o
            WHERE
-             o_custkey = c_custkey
+             o.custkey = c.custkey
          )
      ) AS custsale
 GROUP BY
