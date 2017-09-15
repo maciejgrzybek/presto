@@ -1,4 +1,4 @@
--- database: presto_tpcds; groups: tpcds
+-- database: presto_tpcds; groups: tpcds_long2
 WITH
   cross_items AS (
    SELECT "i_item_sk" "ss_item_sk"

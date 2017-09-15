@@ -1,4 +1,4 @@
--- database: presto_tpcds; groups: tpcds
+-- database: presto_tpcds; groups: tpcds1
 SELECT
   "avg"("ss_quantity")
 , "avg"("ss_ext_sales_price")

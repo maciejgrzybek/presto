@@ -1,4 +1,4 @@
--- database: presto_tpcds; groups: tpcds
+-- database: presto_tpcds; groups: tpcds1
 SELECT
   "cd_gender"
 , "cd_marital_status"

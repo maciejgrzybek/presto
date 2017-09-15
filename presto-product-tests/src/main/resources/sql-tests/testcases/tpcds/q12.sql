@@ -1,4 +1,4 @@
--- database: presto_tpcds; groups: tpcds
+-- database: presto_tpcds; groups: tpcds1
 SELECT
   "i_item_id"
 , "i_item_desc"
