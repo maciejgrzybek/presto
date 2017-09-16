@@ -1,22 +1,22 @@
 -- database: presto_tpch_old; groups: tpch; tables: lineitem
 SELECT
-  l.returnflag,
-  l.linestatus,
-  sum(l.quantity)                                       AS sum_qty,
-  sum(l.extendedprice)                                  AS sum_base_price,
-  sum(l.extendedprice * (1 - l.discount))               AS sum_disc_price,
-  sum(l.extendedprice * (1 - l.discount) * (1 + l.tax)) AS sum_charge,
-  avg(l.quantity)                                       AS avg_qty,
-  avg(l.extendedprice)                                  AS avg_price,
-  avg(l.discount)                                       AS avg_disc,
+  l_returnflag,
+  l_linestatus,
+  sum(l_quantity)                                       AS sum_qty,
+  sum(l_extendedprice)                                  AS sum_base_price,
+  sum(l_extendedprice * (1 - l_discount))               AS sum_disc_price,
+  sum(l_extendedprice * (1 - l_discount) * (1 + l_tax)) AS sum_charge,
+  avg(l_quantity)                                       AS avg_qty,
+  avg(l_extendedprice)                                  AS avg_price,
+  avg(l_discount)                                       AS avg_disc,
   count(*)                                              AS count_order
 FROM
-  lineitem l
+  lineitem
 WHERE
-  l.shipdate <= DATE '1998-12-01' - INTERVAL '90' DAY
+  l_shipdate <= DATE '1998-12-01' - INTERVAL '90' DAY
 GROUP BY
-l.returnflag,
-l.linestatus
+l_returnflag,
+l_linestatus
 ORDER BY
-l.returnflag,
-l.linestatus
+l_returnflag,
+l_linestatus
