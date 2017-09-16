@@ -1,4 +1,4 @@
--- database: presto_tpcds; groups: tpcds
+-- database: presto_tpcds; groups: tpcds,quarantine
 --- quarantined due https://github.com/prestodb/presto/issues/6991
 WITH
   ss AS (
