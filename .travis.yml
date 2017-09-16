@@ -18,6 +18,7 @@ env:
     - TEST_SPECIFIC_MODULES=presto-hive
     - TEST_OTHER_MODULES=!presto-tests,!presto-raptor,!presto-accumulo,!presto-cassandra,!presto-hive,!presto-docs,!presto-server,!presto-server-rpm
     - PRODUCT_TESTS_BASIC_ENVIRONMENT=true
+    - TPCH=true
     - PRODUCT_TESTS_SPECIFIC_ENVIRONMENT=true
     - HIVE_TESTS=true
 
@@ -43,7 +44,7 @@ install:
       ./mvnw install $MAVEN_FAST_INSTALL -pl '!presto-docs,!presto-server,!presto-server-rpm'
     fi
   - |
-    if [[ -v PRODUCT_TESTS_BASIC_ENVIRONMENT || -v PRODUCT_TESTS_SPECIFIC_ENVIRONMENT ]]; then
+    if [[ -v PRODUCT_TESTS_BASIC_ENVIRONMENT || -v PRODUCT_TESTS_SPECIFIC_ENVIRONMENT || -v TPCH ]]; then
       ./mvnw install $MAVEN_FAST_INSTALL -pl '!presto-docs,!presto-server-rpm'
     fi
   - |
@@ -74,7 +75,12 @@ script:
   - |
     if [[ -v PRODUCT_TESTS_BASIC_ENVIRONMENT ]]; then
       presto-product-tests/bin/run_on_docker.sh \
-        multinode -x quarantine,big_query,storage_formats,profile_specific_tests,tpcds
+        multinode -x quarantine,big_query,storage_formats,profile_specific_tests,tpcds,tpch,tpcds1,tpcds_long1,tpcds_long2
+    fi
+  - |
+    if [[ -v TPCH ]]; then
+      presto-product-tests/bin/run_on_docker.sh \
+        multinode -g tpch -x quarantine
     fi
   - |
     if [[ -v PRODUCT_TESTS_SPECIFIC_ENVIRONMENT ]]; then
