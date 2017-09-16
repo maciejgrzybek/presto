@@ -1,4 +1,4 @@
--- database: presto_tpcds; groups: tpcds
+-- database: presto_tpcds; groups: tpcds_long2
 WITH
   frequent_ss_items AS (
    SELECT
