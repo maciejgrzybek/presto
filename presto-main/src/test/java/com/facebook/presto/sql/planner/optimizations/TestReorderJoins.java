@@ -98,7 +98,7 @@ public class TestReorderJoins
                 anyTree(
                         join(INNER, ImmutableList.of(equiJoinClause("L_ORDERKEY", "O_ORDERKEY")),
                                 anyTree(
-                                        join(INNER, ImmutableList.of(equiJoinClause("P_PARTKEY", "L_PARTKEY")), Optional.of("P_NAME < cast(L_COMMENT AS varchar(55))"),
+                                        join(INNER, ImmutableList.of(equiJoinClause("P_PARTKEY", "L_PARTKEY")), Optional.of("P_NAME < cast(L_COMMENT AS varchar(55))"), ImmutableMap.of("L_ORDERKEY", "O_ORDERKEY"),
                                                 anyTree(PART_WITH_NAME_TABLESCAN),
                                                 anyTree(filter("L_PARTKEY <> L_ORDERKEY AND L_ORDERKEY = \"$INTERNAL$DEFERRED_SYMBOL_REFERENCE\"(\"128\", \"dynamic_filter_orderkey\")", LINEITEM_WITH_COMMENT_TABLESCAN)))),
                                 anyTree(ORDERS_TABLESCAN))));

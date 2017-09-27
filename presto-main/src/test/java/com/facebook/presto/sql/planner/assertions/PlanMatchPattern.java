@@ -67,6 +67,7 @@ import static com.facebook.presto.sql.planner.assertions.MatchResult.NO_MATCH;
 import static com.facebook.presto.sql.planner.assertions.MatchResult.match;
 import static com.facebook.presto.sql.planner.assertions.StrictAssignedSymbolsMatcher.actualAssignments;
 import static com.facebook.presto.sql.planner.assertions.StrictSymbolsMatcher.actualOutputs;
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.ImmutableMap.toImmutableMap;
@@ -313,17 +314,21 @@ public final class PlanMatchPattern
     public static PlanMatchPattern join(
             JoinNode.Type joinType,
             List<ExpectedValueProvider<JoinNode.EquiJoinClause>> expectedEquiCriteria,
+            Optional<String> expectedFilter,
             Map<String, String> expectedDynamicFilter,
             PlanMatchPattern left,
             PlanMatchPattern right)
     {
+        checkArgument(!expectedDynamicFilter.isEmpty(), "Expected dynamic filter cannot be empty");
+
         Map<SymbolAlias, SymbolAlias> expectedDynamicFilterAliases = expectedDynamicFilter.entrySet().stream()
                 .collect(toImmutableMap(entry -> new SymbolAlias(entry.getKey()), entry -> new SymbolAlias(entry.getValue())));
+
         DynamicFilterMatcher dynamicFilterMatcher = new DynamicFilterMatcher(expectedDynamicFilterAliases);
         JoinMatcher joinMatcher = new JoinMatcher(
                 joinType,
                 expectedEquiCriteria,
-                Optional.empty(),
+                expectedFilter.map(predicate -> rewriteIdentifiersToSymbolReferences(new SqlParser().createExpression(predicate))),
                 Optional.of(dynamicFilterMatcher));
 
         return node(JoinNode.class, node(FilterNode.class, left).with(dynamicFilterMatcher), right)

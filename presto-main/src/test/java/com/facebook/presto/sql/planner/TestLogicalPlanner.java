@@ -129,18 +129,20 @@ public class TestLogicalPlanner
     public void testInnerInequalityJoinWithEquiJoinConjuncts()
             throws Exception
     {
-        assertPlan("SELECT 1 FROM orders o JOIN lineitem l ON o.shippriority = l.linenumber AND o.orderkey < l.orderkey",
-                anyTree(
+        assertPlan("SELECT 1 FROM orders o JOIN lineitem l ON o.shippriority = l.linenumber",// AND o.orderkey < l.orderkey",
+                any(
                         anyNot(FilterNode.class,
                                 join(INNER,
                                         ImmutableList.of(equiJoinClause("O_SHIPPRIORITY", "L_LINENUMBER")),
-                                        Optional.of("O_ORDERKEY < L_ORDERKEY"),
-                                        any(tableScan("orders", ImmutableMap.of(
-                                                "O_SHIPPRIORITY", "shippriority",
-                                                "O_ORDERKEY", "orderkey"))),
-                                        anyTree(tableScan("lineitem", ImmutableMap.of(
-                                                "L_LINENUMBER", "linenumber",
-                                                "L_ORDERKEY", "orderkey")))))));
+//                                        Optional.of("O_ORDERKEY < L_ORDERKEY"),
+                                        Optional.empty(),
+//                                        ImmutableMap.of("O_SHIPPRIORITY", "L_LINENUMBER"),
+                                                any(any(tableScan("orders", ImmutableMap.of(
+                                                        "O_SHIPPRIORITY", "shippriority",
+                                                        "O_ORDERKEY", "orderkey")))),
+                                                any(any(tableScan("lineitem", ImmutableMap.of(
+                                                        "L_LINENUMBER", "linenumber",
+                                                        "L_ORDERKEY", "orderkey"))))))));
     }
 
     @Test

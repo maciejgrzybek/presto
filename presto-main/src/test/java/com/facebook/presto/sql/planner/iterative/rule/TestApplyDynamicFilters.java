@@ -131,6 +131,7 @@ public class TestApplyDynamicFilters
                         join(
                                 INNER,
                                 ImmutableList.of(equiJoinClause("COL1", "COL2")),
+                                Optional.empty(),
                                 ImmutableMap.of("COL1", "COL2"),
                                 values("COL1"),
                                 values("COL2")));
@@ -159,6 +160,7 @@ public class TestApplyDynamicFilters
                                 ImmutableList.of(
                                         equiJoinClause("L_COL1", "R_COL1"),
                                         equiJoinClause("L_COL2", "R_COL2")),
+                                Optional.empty(),
                                 ImmutableMap.of("L_COL1", "R_COL1", "L_COL2", "R_COL2"),
                                 values("L_COL1", "L_COL2"),
                                 values("R_COL1", "R_COL2")));
@@ -187,6 +189,7 @@ public class TestApplyDynamicFilters
                                 ImmutableList.of(
                                         equiJoinClause("L_COL1", "R_COL1"),
                                         equiJoinClause("L_COL2", "R_COL2")),
+                                Optional.empty(),
                                 ImmutableMap.of("L_COL1", "R_COL1"),
                                 values("L_COL1", "L_COL2"),
                                 values("R_COL1", "R_COL2")));
